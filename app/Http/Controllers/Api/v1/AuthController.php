@@ -15,8 +15,15 @@ class AuthController extends Controller
 
     public function signin(SigninRequest $request) : JSONResponse
     {
-        $result = $this->authService->signin($request->validated());
+        $result = $this->authService->sign_in($request->validated(), $request);
 
         return response()->json($result, Response::HTTP_OK);
+    }
+
+    public function signout(Request $request) : JSONResponse
+    {
+        $this->authService->sign_out($request->user(), $request->session_id);
+
+        return response()->json(true, Response::HTTP_OK);
     }
 }
