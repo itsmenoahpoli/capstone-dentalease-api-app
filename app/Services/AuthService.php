@@ -4,12 +4,13 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
-use App\Services\Users\UserSessionsService;
+use App\Services\Users\{UserSessionsService, UserOtpsService};
 
 class AuthService
 {
     public function __construct(
-        private UserSessionsService $userSessionsService
+        public UserSessionsService $userSessionsService,
+        public UserOtpsService $userOtpsService
     ) {}
 
     public function sign_in($credentials, $request_data)
@@ -42,6 +43,20 @@ class AuthService
     {
         $this->userSessionsService->end_session($session_id);
         $user->currentAccessToken()->delete();
+
+        return true;
+    }
+
+    public function request_otp($data)
+    {
+        $otp = $this->userOtpsService->create_otp($data['email'], $data['type']);
+
+        return $otp;
+    }
+
+    public function verify_otp($data)
+    {
+        $this->userOtpsService->verify_otp($data['email'], $data['otp']);
 
         return true;
     }

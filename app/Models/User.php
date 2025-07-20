@@ -37,4 +37,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\Users\UserSession::class);
     }
+
+    public function user_otps() : HasMany
+    {
+        return $this->hasMany(\App\Models\Users\UserOtp::class);
+    }
 }
