@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\v1\{AuthController, ServicesController, AppointmentsController, PatientsController};
+use App\Http\Controllers\Api\v1\{AuthController, ServicesController, AppointmentsController, PatientsController, ContentDataController};
 
 Route::prefix('v1')->group(function() {
     Route::prefix('auth')->group(function() {
@@ -34,5 +34,15 @@ Route::prefix('v1')->group(function() {
         Route::post('/', [PatientsController::class, 'store'])->name('patients.store');
         Route::put('/{id}', [PatientsController::class, 'update'])->name('patients.update');
         Route::delete('/{id}', [PatientsController::class, 'destroy'])->name('patients.destroy');
+    });
+
+    Route::prefix('content')->group(function() {
+        Route::get('/', [ContentDataController::class, 'index'])->name('content.index');
+        Route::get('/active', [ContentDataController::class, 'active'])->name('content.active');
+        Route::get('/category/{category}', [ContentDataController::class, 'showByCategory'])->name('content.showByCategory');
+        Route::get('/{id}', [ContentDataController::class, 'show'])->name('content.show');
+        Route::post('/', [ContentDataController::class, 'store'])->name('content.store');
+        Route::put('/{id}', [ContentDataController::class, 'update'])->name('content.update');
+        Route::delete('/{id}', [ContentDataController::class, 'destroy'])->name('content.destroy');
     });
 });

@@ -550,6 +550,371 @@
                 }
             }
         },
+        "/content": {
+            "get": {
+                "tags": [
+                    "Content Management"
+                ],
+                "summary": "Get all content",
+                "description": "Retrieve a list of all CMS content",
+                "operationId": "09d5fcaf2ef118b15ee62d6a7d4fa847",
+                "responses": {
+                    "200": {
+                        "description": "List of content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ContentData"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Content Management"
+                ],
+                "summary": "Create new content",
+                "description": "Create a new CMS content entry",
+                "operationId": "9dc847fbe0f28c8ef525d110dd0a3236",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "category",
+                                    "title",
+                                    "content"
+                                ],
+                                "properties": {
+                                    "category": {
+                                        "type": "string",
+                                        "enum": [
+                                            "clinic_information",
+                                            "clinic_announcements",
+                                            "latest_developments",
+                                            "owner_information",
+                                            "our_team"
+                                        ],
+                                        "example": "clinic_information"
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Welcome to DentalEase"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "example": "We provide comprehensive dental care services..."
+                                    },
+                                    "metadata": {
+                                        "type": "object",
+                                        "example": {
+                                            "contact_email": "info@dentalease.com"
+                                        }
+                                    },
+                                    "is_active": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Content created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/ContentData"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    },
+                    "422": {
+                        "description": "Category already exists"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/content/{id}": {
+            "get": {
+                "tags": [
+                    "Content Management"
+                ],
+                "summary": "Get a specific content",
+                "description": "Retrieve a specific CMS content by ID",
+                "operationId": "88386cf3bf273148f2a3174e33bb2d0b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Content details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/ContentData"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Content not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Content Management"
+                ],
+                "summary": "Update content",
+                "description": "Update an existing CMS content entry",
+                "operationId": "c043efada0ebf97c2f82eb98910784e8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "category": {
+                                        "type": "string",
+                                        "enum": [
+                                            "clinic_information",
+                                            "clinic_announcements",
+                                            "latest_developments",
+                                            "owner_information",
+                                            "our_team"
+                                        ],
+                                        "example": "clinic_information"
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Welcome to DentalEase"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "example": "We provide comprehensive dental care services..."
+                                    },
+                                    "metadata": {
+                                        "type": "object",
+                                        "example": {
+                                            "contact_email": "info@dentalease.com"
+                                        }
+                                    },
+                                    "is_active": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Content updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/ContentData"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    },
+                    "404": {
+                        "description": "Content not found"
+                    },
+                    "422": {
+                        "description": "Category already exists"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Content Management"
+                ],
+                "summary": "Delete content",
+                "description": "Delete a CMS content entry",
+                "operationId": "c5840050e03331d532b0d44b2aae130d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Content deleted successfully"
+                    },
+                    "404": {
+                        "description": "Content not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/content/category/{category}": {
+            "get": {
+                "tags": [
+                    "Content Management"
+                ],
+                "summary": "Get content by category",
+                "description": "Retrieve CMS content by category",
+                "operationId": "2f3e345fa87195d9c1f7a5c9be2a4080",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "clinic_information",
+                                "clinic_announcements",
+                                "latest_developments",
+                                "owner_information",
+                                "our_team"
+                            ],
+                            "example": "clinic_information"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Content details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/ContentData"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Content not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/content/active": {
+            "get": {
+                "tags": [
+                    "Content Management"
+                ],
+                "summary": "Get active content",
+                "description": "Retrieve all active CMS content",
+                "operationId": "1c44541cecb33729637bac06358490e9",
+                "responses": {
+                    "200": {
+                        "description": "List of active content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ContentData"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
         "/patients": {
             "get": {
                 "tags": [
@@ -1205,6 +1570,51 @@
                 },
                 "type": "object"
             },
+            "ContentData": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "category": {
+                        "type": "string",
+                        "example": "clinic_information"
+                    },
+                    "category_display": {
+                        "type": "string",
+                        "example": "Clinic Information"
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Welcome to DentalEase"
+                    },
+                    "content": {
+                        "type": "string",
+                        "example": "We provide comprehensive dental care services..."
+                    },
+                    "metadata": {
+                        "type": "object",
+                        "example": {
+                            "contact_email": "info@dentalease.com"
+                        }
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-31T09:10:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-31T09:10:00.000000Z"
+                    }
+                },
+                "type": "object"
+            },
             "Patient": {
                 "properties": {
                     "id": {
@@ -1324,6 +1734,10 @@
         {
             "name": "Authentication",
             "description": "Authentication"
+        },
+        {
+            "name": "Content Management",
+            "description": "Content Management"
         },
         {
             "name": "Patients",
