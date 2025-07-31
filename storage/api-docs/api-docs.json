@@ -1,0 +1,589 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "DentalEase API",
+        "description": "API for DentalEase application - managing dental services and user authentication",
+        "contact": {
+            "name": "DentalEase Team",
+            "email": "support@dentalease.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api/v1",
+            "description": "Development server"
+        }
+    ],
+    "paths": {
+        "/auth/signin": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "User sign in",
+                "description": "Authenticate user with email and password",
+                "operationId": "236556f79990633f3eb6a2bca6b74655",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "minLength": 8,
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful authentication",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "properties": {
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "role": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "session": {
+                                            "type": "string"
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                }
+            }
+        },
+        "/auth/signout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "User sign out",
+                "description": "Sign out user and invalidate session",
+                "operationId": "e5a8eb429b7086b03ec767a976af365b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "session_id"
+                                ],
+                                "properties": {
+                                    "session_id": {
+                                        "type": "string",
+                                        "example": "session_123456"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully signed out",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/auth/request-otp": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Request OTP",
+                "description": "Request one-time password for email verification",
+                "operationId": "15703470379b5d4d8fb53ae127121e7c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "type"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "signup",
+                                            "reset_password"
+                                        ],
+                                        "example": "signup"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OTP sent successfully"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/auth/verify-otp": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Verify OTP",
+                "description": "Verify one-time password",
+                "operationId": "1a5f016ab47b000eef2170d88c78ca8c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "otp"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "otp": {
+                                        "type": "string",
+                                        "maxLength": 6,
+                                        "minLength": 6,
+                                        "example": "123456"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OTP verified successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid OTP"
+                    }
+                }
+            }
+        },
+        "/services": {
+            "get": {
+                "tags": [
+                    "Services"
+                ],
+                "summary": "Get all services",
+                "description": "Retrieve a list of all dental services",
+                "operationId": "c1f61518926466ef0027d0b1bbc40dc0",
+                "responses": {
+                    "200": {
+                        "description": "List of services",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Service"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Services"
+                ],
+                "summary": "Create a new service",
+                "description": "Create a new dental service",
+                "operationId": "94779e6e2812be55eaa42d9b03cedd61",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "category",
+                                    "name",
+                                    "price",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "category": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Dental Cleaning"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Regular Cleaning"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "minimum": 0,
+                                        "example": 150
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "offered",
+                                            "draft"
+                                        ],
+                                        "example": "offered"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Service created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Service"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/services/{id}": {
+            "get": {
+                "tags": [
+                    "Services"
+                ],
+                "summary": "Get a specific service",
+                "description": "Retrieve a specific dental service by ID",
+                "operationId": "19d4f42682a0a6d27aab0e58b8bf9015",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Service details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Service"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Service not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Services"
+                ],
+                "summary": "Update a service",
+                "description": "Update an existing dental service",
+                "operationId": "8f1c1d3d06cc28f7040eddd5b762f790",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "category": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Dental Cleaning"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Premium Cleaning"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "minimum": 0,
+                                        "example": 200
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "offered",
+                                            "draft"
+                                        ],
+                                        "example": "offered"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Service updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Service"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    },
+                    "404": {
+                        "description": "Service not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Services"
+                ],
+                "summary": "Delete a service",
+                "description": "Delete a dental service",
+                "operationId": "121999275ba985604e0b74819623c402",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Service deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Service deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Service not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Service": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "category": {
+                        "type": "string",
+                        "example": "Dental Cleaning"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Regular Cleaning"
+                    },
+                    "price": {
+                        "type": "string",
+                        "format": "decimal",
+                        "example": "150.00"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "offered",
+                            "draft"
+                        ],
+                        "example": "offered"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-31T09:10:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-31T09:10:00.000000Z"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
+            "name": "Services",
+            "description": "Services"
+        }
+    ]
+}
