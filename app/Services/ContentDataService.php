@@ -28,30 +28,39 @@ class ContentDataService
         return $this->contentDataRepository->getContentByCategory($category);
     }
 
-    public function createContent(array $data): ContentData
+    public function getAllContentByCategory(string $category): \Illuminate\Database\Eloquent\Collection
     {
-        $existingContent = $this->contentDataRepository->getContentByCategory($data['category']);
-
-        if ($existingContent) {
-            throw ValidationException::withMessages([
-                'category' => 'Content for this category already exists. Only one record per category is allowed.'
-            ]);
-        }
-
-        return $this->contentDataRepository->createContent($data);
+        return $this->contentDataRepository->getAllContentByCategory($category);
     }
 
-    public function updateContent(int $id, array $data): ContentData
+        public function createContent(array $data): ContentData
     {
-        $currentContent = $this->contentDataRepository->getContentById($id);
-
-        if (isset($data['category']) && $data['category'] !== $currentContent->category) {
+        if ($data['category'] !== 'clinic_announcements') {
             $existingContent = $this->contentDataRepository->getContentByCategory($data['category']);
 
             if ($existingContent) {
                 throw ValidationException::withMessages([
                     'category' => 'Content for this category already exists. Only one record per category is allowed.'
                 ]);
+            }
+        }
+
+        return $this->contentDataRepository->createContent($data);
+    }
+
+        public function updateContent(int $id, array $data): ContentData
+    {
+        $currentContent = $this->contentDataRepository->getContentById($id);
+
+        if (isset($data['category']) && $data['category'] !== $currentContent->category) {
+            if ($data['category'] !== 'clinic_announcements') {
+                $existingContent = $this->contentDataRepository->getContentByCategory($data['category']);
+
+                if ($existingContent) {
+                    throw ValidationException::withMessages([
+                        'category' => 'Content for this category already exists. Only one record per category is allowed.'
+                    ]);
+                }
             }
         }
 

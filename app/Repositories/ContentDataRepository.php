@@ -22,6 +22,11 @@ class ContentDataRepository
         return ContentData::where('category', $category)->first();
     }
 
+    public function getAllContentByCategory(string $category): Collection
+    {
+        return ContentData::where('category', $category)->get();
+    }
+
     public function createContent(array $data): ContentData
     {
         return ContentData::create($data);

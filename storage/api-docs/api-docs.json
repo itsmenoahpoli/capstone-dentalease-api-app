@@ -837,7 +837,7 @@
                     "Content Management"
                 ],
                 "summary": "Get content by category",
-                "description": "Retrieve CMS content by category",
+                "description": "Retrieve CMS content by category. For clinic_announcements, returns an array of all announcements. For other categories, returns a single content item.",
                 "operationId": "2f3e345fa87195d9c1f7a5c9be2a4080",
                 "parameters": [
                     {
@@ -863,12 +863,27 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/components/schemas/ContentData"
+                                    "oneOf": [
+                                        {
+                                            "properties": {
+                                                "data": {
+                                                    "$ref": "#/components/schemas/ContentData"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        {
+                                            "properties": {
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/ContentData"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
                                         }
-                                    },
-                                    "type": "object"
+                                    ]
                                 }
                             }
                         }

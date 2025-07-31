@@ -96,7 +96,7 @@ class ContentDataController extends Controller
      *     path="/content/category/{category}",
      *     tags={"Content Management"},
      *     summary="Get content by category",
-     *     description="Retrieve CMS content by category",
+     *     description="Retrieve CMS content by category. For clinic_announcements, returns an array of all announcements. For other categories, returns a single content item.",
      *     @OA\Parameter(
      *         name="category",
      *         in="path",
@@ -107,7 +107,14 @@ class ContentDataController extends Controller
      *         response=200,
      *         description="Content details",
      *         @OA\JsonContent(
-     *             @OA\Property(property="data", ref="#/components/schemas/ContentData")
+     *             oneOf={
+     *                 @OA\Schema(
+     *                     @OA\Property(property="data", ref="#/components/schemas/ContentData")
+     *                 ),
+     *                 @OA\Schema(
+     *                     @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/ContentData"))
+     *                 )
+     *             }
      *         )
      *     ),
      *     @OA\Response(
@@ -122,6 +129,16 @@ class ContentDataController extends Controller
      */
     public function showByCategory(string $category): JSONResponse
     {
+        if ($category === 'clinic_announcements') {
+            $content = $this->contentDataService->getAllContentByCategory($category);
+
+            if ($content->isEmpty()) {
+                return response()->json(['message' => 'No announcements found'], Response::HTTP_NOT_FOUND);
+            }
+
+            return response()->json(ContentDataResource::collection($content), Response::HTTP_OK);
+        }
+
         $content = $this->contentDataService->getContentByCategory($category);
 
         if (!$content) {
