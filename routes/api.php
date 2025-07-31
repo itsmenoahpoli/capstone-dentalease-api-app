@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\v1\{AuthController, ServicesController, AppointmentsController, PatientsController, ContentDataController};
+use App\Http\Controllers\Api\v1\{AuthController, ServicesController, AppointmentsController, PatientsController, ContentDataController, ContactUsController};
 
 Route::prefix('v1')->group(function() {
     Route::prefix('auth')->group(function() {
@@ -44,5 +44,13 @@ Route::prefix('v1')->group(function() {
         Route::post('/', [ContentDataController::class, 'store'])->name('content.store');
         Route::put('/{id}', [ContentDataController::class, 'update'])->name('content.update');
         Route::delete('/{id}', [ContentDataController::class, 'destroy'])->name('content.destroy');
+    });
+
+    Route::prefix('contact-us')->group(function() {
+        Route::get('/', [ContactUsController::class, 'index'])->name('contact-us.index');
+        Route::get('/{id}', [ContactUsController::class, 'show'])->name('contact-us.show');
+        Route::post('/', [ContactUsController::class, 'store'])->name('contact-us.store');
+        Route::put('/{id}', [ContactUsController::class, 'update'])->name('contact-us.update');
+        Route::delete('/{id}', [ContactUsController::class, 'destroy'])->name('contact-us.destroy');
     });
 });
