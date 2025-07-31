@@ -13,7 +13,7 @@ class ServiceRepository
 
     public function getAll(): Collection
     {
-        return $this->service->all();
+        return $this->service->orderBy('id', 'desc')->get();
     }
 
     public function findById(int $id): ?Service

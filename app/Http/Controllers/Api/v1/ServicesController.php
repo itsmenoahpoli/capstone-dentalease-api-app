@@ -49,9 +49,7 @@ class ServicesController extends Controller
     {
         $services = $this->servicesService->getAllServices();
 
-        return response()->json([
-            'data' => ServiceResource::collection($services)
-        ], Response::HTTP_OK);
+        return response()->json(ServiceResource::collection($services), Response::HTTP_OK);
     }
 
     /**
@@ -88,9 +86,7 @@ class ServicesController extends Controller
     {
         $service = $this->servicesService->getServiceById($id);
 
-        return response()->json([
-            'data' => new ServiceResource($service)
-        ], Response::HTTP_OK);
+        return response()->json(new ServiceResource($service), Response::HTTP_OK);
     }
 
     /**
@@ -130,9 +126,7 @@ class ServicesController extends Controller
     {
         $service = $this->servicesService->createService($request->validated());
 
-        return response()->json([
-            'data' => new ServiceResource($service)
-        ], Response::HTTP_CREATED);
+        return response()->json(new ServiceResource($service), Response::HTTP_CREATED);
     }
 
     /**
@@ -182,9 +176,7 @@ class ServicesController extends Controller
     {
         $service = $this->servicesService->updateService($id, $request->validated());
 
-        return response()->json([
-            'data' => new ServiceResource($service)
-        ], Response::HTTP_OK);
+        return response()->json(new ServiceResource($service), Response::HTTP_OK);
     }
 
     /**
@@ -221,8 +213,6 @@ class ServicesController extends Controller
     {
         $this->servicesService->deleteService($id);
 
-        return response()->json([
-            'message' => 'Service deleted successfully'
-        ], Response::HTTP_OK);
+        return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }

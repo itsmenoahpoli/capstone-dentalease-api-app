@@ -16,6 +16,307 @@
         }
     ],
     "paths": {
+        "/appointments": {
+            "get": {
+                "tags": [
+                    "Appointments"
+                ],
+                "summary": "Get all appointments",
+                "description": "Retrieve a list of all appointments",
+                "operationId": "e975113000704ff889fd39adcceb36bf",
+                "responses": {
+                    "200": {
+                        "description": "List of appointments",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Appointment"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Appointments"
+                ],
+                "summary": "Create a new appointment",
+                "description": "Create a new appointment",
+                "operationId": "f2581d2b5d5ab8807ceb65d47549cf1a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "patient_name",
+                                    "patient_email",
+                                    "patient_contact",
+                                    "purpose",
+                                    "schedule_time",
+                                    "schedule_date",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "patient_name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "patient_email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john.doe@example.com"
+                                    },
+                                    "patient_contact": {
+                                        "type": "string",
+                                        "example": "+1234567890"
+                                    },
+                                    "purpose": {
+                                        "type": "string",
+                                        "example": "Regular dental checkup"
+                                    },
+                                    "remarks": {
+                                        "type": "string",
+                                        "example": "Patient has sensitive teeth"
+                                    },
+                                    "schedule_time": {
+                                        "type": "string",
+                                        "format": "time",
+                                        "example": "14:30"
+                                    },
+                                    "schedule_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-08-15"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "pending",
+                                            "active",
+                                            "past_due",
+                                            "cancelled"
+                                        ],
+                                        "example": "pending"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Appointment created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Appointment"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/appointments/{id}": {
+            "get": {
+                "tags": [
+                    "Appointments"
+                ],
+                "summary": "Get a specific appointment",
+                "description": "Retrieve a specific appointment by ID",
+                "operationId": "62e6b32be0a1e6a7fab0708aef3e02fb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Appointment details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Appointment"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Appointment not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Appointments"
+                ],
+                "summary": "Update an appointment",
+                "description": "Update an existing appointment",
+                "operationId": "df9efe502863aad3ea47cc918833aaa5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "patient_name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "patient_email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john.doe@example.com"
+                                    },
+                                    "patient_contact": {
+                                        "type": "string",
+                                        "example": "+1234567890"
+                                    },
+                                    "purpose": {
+                                        "type": "string",
+                                        "example": "Regular dental checkup"
+                                    },
+                                    "remarks": {
+                                        "type": "string",
+                                        "example": "Patient has sensitive teeth"
+                                    },
+                                    "schedule_time": {
+                                        "type": "string",
+                                        "format": "time",
+                                        "example": "14:30"
+                                    },
+                                    "schedule_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-08-15"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "pending",
+                                            "active",
+                                            "past_due",
+                                            "cancelled"
+                                        ],
+                                        "example": "active"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Appointment updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Appointment"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Appointment not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Appointments"
+                ],
+                "summary": "Delete an appointment",
+                "description": "Delete an existing appointment",
+                "operationId": "6b486c1ca5a3fb49659004865f595ca0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Appointment deleted successfully"
+                    },
+                    "404": {
+                        "description": "Appointment not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
         "/auth/signin": {
             "post": {
                 "tags": [
@@ -245,6 +546,324 @@
                     },
                     "400": {
                         "description": "Invalid OTP"
+                    }
+                }
+            }
+        },
+        "/patients": {
+            "get": {
+                "tags": [
+                    "Patients"
+                ],
+                "summary": "Get all patients",
+                "description": "Retrieve a list of all patients",
+                "operationId": "08d12932b0173a86f4345f5c995f2d84",
+                "responses": {
+                    "200": {
+                        "description": "List of patients",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Patient"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Patients"
+                ],
+                "summary": "Create a new patient",
+                "description": "Create a new patient record",
+                "operationId": "27bf6455482d7bd9706468782d453005",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "contact",
+                                    "address",
+                                    "gender",
+                                    "birthdate",
+                                    "citizenship"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john.doe@example.com"
+                                    },
+                                    "contact": {
+                                        "type": "string",
+                                        "example": "+1234567890"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "123 Main St, City, State 12345"
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "enum": [
+                                            "male",
+                                            "female",
+                                            "other"
+                                        ],
+                                        "example": "male"
+                                    },
+                                    "birthdate": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "1990-01-01"
+                                    },
+                                    "citizenship": {
+                                        "type": "string",
+                                        "example": "American"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "active",
+                                            "inactive"
+                                        ],
+                                        "example": "active"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Patient created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Patient"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/patients/{id}": {
+            "get": {
+                "tags": [
+                    "Patients"
+                ],
+                "summary": "Get a specific patient",
+                "description": "Retrieve a specific patient by ID",
+                "operationId": "955a98fb74bab2b3c83a9aad7fff4c6f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Patient details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Patient"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Patient not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Patients"
+                ],
+                "summary": "Update a patient",
+                "description": "Update an existing patient record",
+                "operationId": "e7d000157c12d3337e1aa30d90f373b4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john.doe@example.com"
+                                    },
+                                    "contact": {
+                                        "type": "string",
+                                        "example": "+1234567890"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "123 Main St, City, State 12345"
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "enum": [
+                                            "male",
+                                            "female",
+                                            "other"
+                                        ],
+                                        "example": "male"
+                                    },
+                                    "birthdate": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "1990-01-01"
+                                    },
+                                    "citizenship": {
+                                        "type": "string",
+                                        "example": "American"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "active",
+                                            "inactive"
+                                        ],
+                                        "example": "active"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Patient updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/Patient"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Patient not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Patients"
+                ],
+                "summary": "Delete a patient",
+                "description": "Delete a patient record",
+                "operationId": "a3ca1450b0bcd46c5180cc8465e4f48a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Patient deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Patient deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Patient not found"
+                    },
+                    "500": {
+                        "description": "Server error"
                     }
                 }
             }
@@ -527,6 +1146,127 @@
     },
     "components": {
         "schemas": {
+            "Appointment": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "patient_name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "patient_email": {
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    },
+                    "patient_contact": {
+                        "type": "string",
+                        "example": "+1234567890"
+                    },
+                    "purpose": {
+                        "type": "string",
+                        "example": "Regular dental checkup"
+                    },
+                    "remarks": {
+                        "type": "string",
+                        "example": "Patient has sensitive teeth"
+                    },
+                    "schedule_time": {
+                        "type": "string",
+                        "format": "time",
+                        "example": "14:30"
+                    },
+                    "schedule_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-08-15"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "active",
+                            "past_due",
+                            "cancelled"
+                        ],
+                        "example": "pending"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-31T09:10:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-31T09:10:00.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Patient": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "john.doe@example.com"
+                    },
+                    "contact": {
+                        "type": "string",
+                        "example": "+1234567890"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "123 Main St, City, State 12345"
+                    },
+                    "gender": {
+                        "type": "string",
+                        "enum": [
+                            "male",
+                            "female",
+                            "other"
+                        ],
+                        "example": "male"
+                    },
+                    "birthdate": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "1990-01-01"
+                    },
+                    "citizenship": {
+                        "type": "string",
+                        "example": "American"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "inactive"
+                        ],
+                        "example": "active"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-31T09:10:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-31T09:10:00.000000Z"
+                    }
+                },
+                "type": "object"
+            },
             "Service": {
                 "properties": {
                     "id": {
@@ -578,8 +1318,16 @@
     },
     "tags": [
         {
+            "name": "Appointments",
+            "description": "Appointments"
+        },
+        {
             "name": "Authentication",
             "description": "Authentication"
+        },
+        {
+            "name": "Patients",
+            "description": "Patients"
         },
         {
             "name": "Services",

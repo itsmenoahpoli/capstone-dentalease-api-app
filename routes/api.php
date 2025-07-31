@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\v1\{AuthController, ServicesController};
+use App\Http\Controllers\Api\v1\{AuthController, ServicesController, AppointmentsController, PatientsController};
 
 Route::prefix('v1')->group(function() {
     Route::prefix('auth')->group(function() {
@@ -18,5 +18,21 @@ Route::prefix('v1')->group(function() {
         Route::post('/', [ServicesController::class, 'store'])->name('services.store');
         Route::put('/{id}', [ServicesController::class, 'update'])->name('services.update');
         Route::delete('/{id}', [ServicesController::class, 'destroy'])->name('services.destroy');
+    });
+
+    Route::prefix('appointments')->group(function() {
+        Route::get('/', [AppointmentsController::class, 'index'])->name('appointments.index');
+        Route::get('/{id}', [AppointmentsController::class, 'show'])->name('appointments.show');
+        Route::post('/', [AppointmentsController::class, 'store'])->name('appointments.store');
+        Route::put('/{id}', [AppointmentsController::class, 'update'])->name('appointments.update');
+        Route::delete('/{id}', [AppointmentsController::class, 'destroy'])->name('appointments.destroy');
+    });
+
+    Route::prefix('patients')->group(function() {
+        Route::get('/', [PatientsController::class, 'index'])->name('patients.index');
+        Route::get('/{id}', [PatientsController::class, 'show'])->name('patients.show');
+        Route::post('/', [PatientsController::class, 'store'])->name('patients.store');
+        Route::put('/{id}', [PatientsController::class, 'update'])->name('patients.update');
+        Route::delete('/{id}', [PatientsController::class, 'destroy'])->name('patients.destroy');
     });
 });
